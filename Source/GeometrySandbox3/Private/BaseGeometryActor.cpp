@@ -18,11 +18,6 @@ void ABaseGeometryActor::BeginPlay()
 
 	//printTypes()
 
-	UE_LOG(LogTemp, Display, TEXT("Hello Unreal"));
-	UE_LOG(LogTemp, Warning, TEXT("Hello Unreal"));
-	UE_LOG(LogTemp, Error, TEXT("Hello Unreal"));
-
-	
 }
 
 // Called every frame
