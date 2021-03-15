@@ -2,8 +2,6 @@
 
 
 #include "BaseGeometryActor.h"
-#include "Engine/Engine.h"
-
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseGeometry, All, All)
 
@@ -20,8 +18,9 @@ void ABaseGeometryActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
-	printStringTypes();
+	FString Name = "John Conor";
+	UE_LOG(LogBaseGeometry, Display, TEXT("Name : %s"), *Name);
+
 	//printTypes()
 
 }
@@ -49,31 +48,4 @@ void ABaseGeometryActor::printTypes()
 	UE_LOG(LogTemp, Display, TEXT("HasWeapon: %d"), static_cast<int>(HasWeapon));
 
 }
-
-
-void ABaseGeometryActor::printStringTypes()
-{
-	FString Name = "John Conor";
-	UE_LOG(LogBaseGeometry, Display, TEXT("Name : %s"), *Name);
-
-	int WeaponNum = 4;
-	float Health = 34.3434f;
-	bool IsDead = false;
-
-	FString WeaponsNumStr = "WeaponNum= : " + FString::FromInt(WeaponNum);
-	FString HealthStr = "Health = " + FString::SanitizeFloat(Health);
-	FString IsDeadStr = "Is Dead =" + FString(IsDead ? "true" : "false");
-
-	FString Stat = FString::Printf(TEXT("==All Stat== \n %s \n%s \n%s"), *WeaponsNumStr, *HealthStr, *IsDeadStr);
-
-	UE_LOG(LogBaseGeometry, Warning, TEXT("%s"), *Stat);
-
-	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, Name);
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, Stat, true, FVector2D(1.5f, 1.5f));
-
-
-
-}
-
-
 
