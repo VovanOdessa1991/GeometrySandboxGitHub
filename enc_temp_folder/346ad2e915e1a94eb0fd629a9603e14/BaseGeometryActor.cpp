@@ -41,7 +41,6 @@ void ABaseGeometryActor::Tick(float DeltaTime)
 	FVector CurrentLocation = GetActorLocation();
 	float time = GetWorld()->GetTimeSeconds();
 	CurrentLocation.Z = InitialLocation.Z + Amplitude * FMath::Sin(Freqency * time);
-	SetActorLocation(CurrentLocation);
 }
 
 void ABaseGeometryActor::printTransform()
