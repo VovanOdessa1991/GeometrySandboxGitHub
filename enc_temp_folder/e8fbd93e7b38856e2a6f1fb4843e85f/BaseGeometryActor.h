@@ -14,23 +14,6 @@ enum class EMovementType : uint8
 	Static
 };
 
-USTRUCT(BlueprintType)
-struct FGeometryData
-{
-	 GENERATED_USTRUCT_BODY()
-
-		 UPROPERTY(EditAnywhere, Category = "Movement")
-		 float Amplitude = 50.0f;
-
-	 UPROPERTY(EditAnywhere, Category = "Movement")
-		 float Freqency = 2.0f;
-
-	 UPROPERTY(EditAnywhere, Category = "Movement")
-		 EMovementType MoveType = EMovementType::Static;
-
-
-};
-
 UCLASS()
 class GEOMETRYSANDBOX3_API ABaseGeometryActor : public AActor
 {
@@ -47,9 +30,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float Amplitude = 50.0f;
 
-	UPROPERTY(EditAnywhere, Category = "GeometryData")
-	FGeometryData GeometryData;
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float Freqency  = 2.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	EMovementType MoveType = EMovementType::Static;
+
 
 	UPROPERTY(EditAnywhere, Category= "Weapon")
 	int32 WeaponNum = 4;
@@ -73,9 +62,8 @@ public:
 
 
 private:
-	void HandleMovement();
-	void PrintTransform();
+	void printTransform();
 	FVector InitialLocation;
-	void PrintTypes();
-	void PrintStringTypes();
+	void printTypes();
+	void printStringTypes();
 };

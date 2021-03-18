@@ -28,9 +28,9 @@ void ABaseGeometryActor::BeginPlay()
 	InitialLocation = GetActorLocation();
 
 
-	printTransform();
-	//printStringTypes();
-	printTypes();
+	//PrintTransform();
+	//PrintStringTypes();
+	//PrintTypes();
 
 }
 
@@ -38,13 +38,35 @@ void ABaseGeometryActor::BeginPlay()
 void ABaseGeometryActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	FVector CurrentLocation = GetActorLocation();
-	float time = GetWorld()->GetTimeSeconds();
-	CurrentLocation.Z = InitialLocation.Z + Amplitude * FMath::Sin(Freqency * time);
-	SetActorLocation(CurrentLocation);
+	
+	HandleMovement();
+
+
+
 }
 
-void ABaseGeometryActor::printTransform()
+void ABaseGeometryActor::HandleMovement()
+{
+	switch (GeometryData.MoveType) {
+	case EMovementType::Sin:
+	{
+
+		FVector CurrentLocation = GetActorLocation();
+		float time = GetWorld()->GetTimeSeconds();
+		CurrentLocation.Z = InitialLocation.Z + GeometryData.Amplitude * FMath::Sin(GeometryData.Freqency * time);
+		SetActorLocation(CurrentLocation);
+	}
+	break;
+
+	case EMovementType::Static:break;
+
+
+	default: break;
+
+	}
+}
+
+void ABaseGeometryActor::PrintTransform()
 {
 
 	FTransform Transform = GetActorTransform();
@@ -64,7 +86,7 @@ void ABaseGeometryActor::printTransform()
 
 }
 
-void ABaseGeometryActor::printTypes()
+void ABaseGeometryActor::PrintTypes()
 {
 
 	UE_LOG(LogBaseGeometry, Warning, TEXT("ActorName= %s"), *GetName());
@@ -76,7 +98,7 @@ void ABaseGeometryActor::printTypes()
 }
 
 
-void ABaseGeometryActor::printStringTypes()
+void ABaseGeometryActor::PrintStringTypes()
 {
 	FString Name = "John Conor";
 	UE_LOG(LogBaseGeometry, Display, TEXT("Name : %s"), *Name);
