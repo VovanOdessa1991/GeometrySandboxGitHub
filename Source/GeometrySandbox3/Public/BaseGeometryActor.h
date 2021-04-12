@@ -7,6 +7,15 @@
 #include "Components/StaticMeshComponent.h"
 #include "BaseGeometryActor.generated.h"
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOncolorChanged,const FLinearColor&, Color, const FString&, Name );
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnTimerFinished,AActor*);
+
+
+
+
+ 
 UENUM(BlueprintType)
 enum class EMovementType : uint8
 {
@@ -17,21 +26,23 @@ enum class EMovementType : uint8
 USTRUCT(BlueprintType)
 struct FGeometryData
 {
-	 GENERATED_USTRUCT_BODY()
+	GENERATED_USTRUCT_BODY()
 
-		 UPROPERTY(EditAnywhere, Category = "Movement")
+		
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		 float Amplitude = 50.0f;
 
-	 UPROPERTY(EditAnywhere, Category = "Movement")
+	 UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		 float Freqency = 2.0f;
 
-	 UPROPERTY(EditAnywhere, Category = "Movement")
+	 UPROPERTY(EditAnywhere, BlueprintReadWrite,  Category = "Movement")
 		 EMovementType MoveType = EMovementType::Static;
 
-	 UPROPERTY(EditAnywhere, Category = "Movement")
+	 UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	 FLinearColor Color = FLinearColor::Black;
 
-	 UPROPERTY(EditAnywhere, Category = "Movement")
+	 UPROPERTY(EditAnywhere,  Category = "Movement")
      float TimerRate = 3.0f;
 
 
@@ -49,10 +60,25 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* BaseMesh;
 
+	void SetGeometryData(const FGeometryData& Data) { GeometryData = Data; }
+
+	UFUNCTION(BlueprintCallable)
+	FGeometryData GetGeometryData() const { return GeometryData; }
+
+	
+
+	UPROPERTY(BlueprintAssignable)
+	FOncolorChanged OncolorChanged;
+
+	
+
+	FOnTimerFinished OnTimerFinished;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+		
 
 	UPROPERTY(EditAnywhere, Category = "GeometryData")
 	FGeometryData GeometryData;
@@ -88,9 +114,11 @@ private:
 	void HandleMovement();
 	void PrintTransform();
 	FVector InitialLocation;
-	void PrintTypes();
+	
 	void PrintStringTypes();
 	void SetColor(const FLinearColor& Color);
-
+	void PrintTypes();
 	void OnTimerFired();
+
+	
 };
