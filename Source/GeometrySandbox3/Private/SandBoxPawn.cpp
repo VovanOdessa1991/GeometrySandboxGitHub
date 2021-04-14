@@ -18,6 +18,11 @@ ASandBoxPawn::ASandBoxPawn()
 	SceneComponent = CreateDefaultSubobject<USceneComponent>("SceneComponent");
 	SetRootComponent(SceneComponent);
 
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComponent");
+	StaticMeshComponent->SetupAttachment(GetRootComponent());
+
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
+	CameraComponent->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
@@ -35,6 +40,7 @@ void ASandBoxPawn::Tick(float DeltaTime)
 	{
 		FVector NewLocation = GetActorLocation()+Velocity*DeltaTime*VelocityVector;
 		SetActorLocation(NewLocation);
+		VelocityVector = FVector::ZeroVector;
 	}
 
 }
@@ -43,11 +49,12 @@ void ASandBoxPawn::Tick(float DeltaTime)
 void ASandBoxPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	//Управление Инпутами
-	PlayerInputComponent->BindAxis("MoveForward", this, &ASandBoxPawn::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ASandBoxPawn::MoveRight);
-
+	if (PlayerInputComponent)
+	{
+		//Управление Инпутами
+		PlayerInputComponent->BindAxis("MoveForward", this, &ASandBoxPawn::MoveForward);
+		PlayerInputComponent->BindAxis("MoveRight", this, &ASandBoxPawn::MoveRight);
+	}
 }
 
 void ASandBoxPawn::MoveForward(float Amount)
@@ -56,9 +63,26 @@ void ASandBoxPawn::MoveForward(float Amount)
 	VelocityVector.X = Amount;
 }
 
+void ASandBoxPawn::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (!NewController) return;
+	UE_LOG(LogSandboxPawn, Error, TEXT("%s possessed %s"), *GetName(), *NewController->GetName());
+}
+void ASandBoxPawn::UnPossessed()
+{
+
+	Super::UnPossessed();
+	UE_LOG(LogSandboxPawn, Error, TEXT("%s possessed"), *GetName());
+
+}
+
+
 void ASandBoxPawn::MoveRight(float Amount)
 {
 	UE_LOG(LogSandboxPawn, Display, TEXT("Move Right: %f"), Amount);
 	VelocityVector.Y = Amount;
 }
+
 

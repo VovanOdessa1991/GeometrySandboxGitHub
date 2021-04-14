@@ -18,16 +18,23 @@ public:
 	ASandBoxPawn();
 
 	UPROPERTY(VisibleAnywhere)
-		USceneComponent* SceneComponent;
-	
+	USceneComponent* SceneComponent;
+
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* StaticMeshComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* CameraComponent;
+
+
 	UPROPERTY(EditAnywhere)
 		float Velocity = 300.0f; 
 
-	UPROPERTY(VisibleAnywere)
-		UStaticMeshComponent* StaticMeshComponent;
 
-	UPROPERTY(VisibleAnywere)
-		UCameraComponent* CameraComponent;
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void UnPossessed() override;
+	
 
 protected:
 	// Called when the game starts or when spawned
